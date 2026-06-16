@@ -1,9 +1,30 @@
+# SPNC GNN Classifier
+
+Multimodal Vietnamese textbook classifier using GraphSAGE + Fusion MLP.
+14 subject classes · 3 grade levels · Inductive GNN evaluation (Khung B).
+
+---
+
+## ML Artifacts (required for backend)
+
+Model weights and graph data are stored on Google Drive (~280 MB total).
+Download them once before running the backend:
+
+```bash
+pip install gdown
+python download_artifacts.py
+```
+
+This will populate `backend/infrastructure/ml/artifacts/` automatically.
+
+---
+
 # 🖥️ Frontend
 
 1️. Clone the Repository
 ```bash
-git clone https://github.com/anhleh33/SPNC_gnnclassifier.git
-cd SPNC_gnnclassifier
+git clone https://github.com/giangmninfo/2026SPNCGraph.git
+cd 2026SPNCGraph
 ```
 
 2. Install Dependencies
