@@ -15,14 +15,14 @@ if hasattr(sys.stderr, 'reconfigure'):
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
-# ── Google Drive folders ──────────────────────────────────────────────────────
+# ── Google Drive folder IDs ───────────────────────────────────────────────────
 # Raw image dataset (screenshots organized by subject)
 DATASET_FOLDER_ID = "1FS27498ltu4seS844g6yBcO6sAXqSCCQ"
 DATASET_DEST      = os.path.join(ROOT, "data", "raw")
 
-# ML artifacts (.pt model weights + graph data) — upload separately to Drive
-# ARTIFACTS_FOLDER_ID = "TODO: upload .pt files to Drive, paste folder ID here"
-# ARTIFACTS_DEST      = os.path.join(ROOT, "backend", "infrastructure", "ml", "artifacts")
+# ML artifacts: model weights + graph data (.pt files)
+ARTIFACTS_FOLDER_ID = "1zhkXpcpt1CTo36VFNNH8_hNJqFOBfT1R"
+ARTIFACTS_DEST      = os.path.join(ROOT, "backend", "infrastructure", "ml", "artifacts")
 
 def install_gdown():
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "gdown>=4.7"])
@@ -47,13 +47,18 @@ if __name__ == "__main__":
         install_gdown()
         import gdown
 
-    download_folder(DATASET_FOLDER_ID, DATASET_DEST, "Raw dataset")
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data-only",      action="store_true", help="Download raw dataset only")
+    parser.add_argument("--artifacts-only", action="store_true", help="Download ML artifacts only")
+    args = parser.parse_args()
 
-    # Uncomment after uploading .pt files to Drive:
-    # download_folder(ARTIFACTS_FOLDER_ID, ARTIFACTS_DEST, "ML artifacts")
+    if args.artifacts_only:
+        download_folder(ARTIFACTS_FOLDER_ID, ARTIFACTS_DEST, "ML artifacts")
+    elif args.data_only:
+        download_folder(DATASET_FOLDER_ID, DATASET_DEST, "Raw dataset")
+    else:
+        download_folder(ARTIFACTS_FOLDER_ID, ARTIFACTS_DEST, "ML artifacts")
+        download_folder(DATASET_FOLDER_ID,   DATASET_DEST,   "Raw dataset")
 
     print("\nSetup complete.")
-    print("NOTE: ML artifacts (.pt files) must be placed in:")
-    print(f"  backend/infrastructure/ml/artifacts/GNN_single_v1/")
-    print(f"  backend/infrastructure/ml/artifacts/GNN_dual_v1/")
-    print(f"  backend/infrastructure/ml/artifacts/GNN_dual_v2/")
