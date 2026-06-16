@@ -1,0 +1,266 @@
+.
+|-- README.md
+|-- app
+|   |-- api
+|   |   `-- classify
+|   |       `-- route.ts
+|   |-- classifier
+|   |   `-- page.tsx
+|   |-- globals.css
+|   |-- layout.tsx
+|   |-- page.tsx
+|   `-- providers
+|-- backend
+|   |-- Dockerfile
+|   |-- Requirements-Full.txt
+|   |-- Requirements-ML.txt
+|   |-- Requirements.txt
+|   |-- __init__.py
+|   |-- app.py
+|   |-- application
+|   |   |-- __init__.py
+|   |   |-- exception.py
+|   |   `-- services
+|   |       |-- __init__.py
+|   |       |-- classification_history_service.py
+|   |       |-- health_service.py
+|   |       |-- image_analysis_service.py
+|   |       |-- image_classifier_service.py
+|   |       |-- image_storage_service.py
+|   |       `-- user_service.py
+|   |-- development
+|   |   |-- db_test.py
+|   |   |-- json_user_repository.py
+|   |   |-- model_test.py
+|   |   |-- postgres_user_repository_test.py
+|   |   `-- session_test.py
+|   |-- di.py
+|   |-- docker-compose.yml
+|   |-- domain
+|   |   |-- __init__.py
+|   |   |-- entities
+|   |   |   |-- __init__.py
+|   |   |   |-- classification_analysis.py
+|   |   |   `-- user.py
+|   |   |-- exception.py
+|   |   `-- value_objects
+|   |       |-- __init__.py
+|   |       `-- subject.py
+|   |-- infrastructure
+|   |   |-- __init__.py
+|   |   |-- database
+|   |   |   |-- __init__.py
+|   |   |   |-- base.py
+|   |   |   |-- models
+|   |   |   |   |-- __init__.py
+|   |   |   |   |-- classification_analysis_model.py
+|   |   |   |   |-- subject_sequence_model.py
+|   |   |   |   `-- user_model.py
+|   |   |   |-- postgres.py
+|   |   |   `-- supabase.py
+|   |   |-- ml
+|   |   |   |-- __init__.py
+|   |   |   |-- artifacts
+|   |   |   |   |-- GNN_dual_v1
+|   |   |   |   |   |-- grade_labels.json
+|   |   |   |   |   |-- graph_data.pt
+|   |   |   |   |   |-- graphsage_grade.pt
+|   |   |   |   |   |-- graphsage_subject.pt
+|   |   |   |   |   `-- subject_labels.json
+|   |   |   |   |-- GNN_dual_v2
+|   |   |   |   |   |-- grade_labels.json
+|   |   |   |   |   |-- graph_data.pt
+|   |   |   |   |   |-- graphsage_grade.pt
+|   |   |   |   |   |-- graphsage_subject.pt
+|   |   |   |   |   |-- node_embeddings.pt
+|   |   |   |   |   |-- subject_labels.json
+|   |   |   |   |   `-- temp.py
+|   |   |   |   `-- GNN_single_v1
+|   |   |   |       |-- graph_data_composite.pt
+|   |   |   |       |-- graph_data_multimodal.pt
+|   |   |   |       |-- label_composite.json
+|   |   |   |       `-- metadata.csv
+|   |   |   |-- classifiers
+|   |   |   |   |-- __init__.py
+|   |   |   |   |-- graphsage_classifier.py
+|   |   |   |   |-- knn_classifier.py
+|   |   |   |   |-- knn_graphsage_classifier.py
+|   |   |   |   `-- voting_classifier.py
+|   |   |   |-- encoders
+|   |   |   |   |-- __init__.py
+|   |   |   |   |-- graphsage_encoder.py
+|   |   |   |   |-- image_encoder.py
+|   |   |   |   `-- text_encoder.py
+|   |   |   |-- features
+|   |   |   |   |-- __init__.py
+|   |   |   |   |-- clip_image_feature.py
+|   |   |   |   |-- node_feature_builder.py
+|   |   |   |   `-- text_feature_builder.py
+|   |   |   |-- image_classifier.py
+|   |   |   |-- models
+|   |   |   |   |-- __init__.py
+|   |   |   |   |-- assets.py
+|   |   |   |   |-- graphsage.py
+|   |   |   |   |-- knn_graphsage_assets.py
+|   |   |   |   `-- voting_assets.py
+|   |   |   |-- ocr
+|   |   |   |   |-- __init__.py
+|   |   |   |   `-- ocr_engine.py
+|   |   |   |-- postprocess
+|   |   |   |   |-- __init__.py
+|   |   |   |   |-- subject_grade_combiner.py
+|   |   |   |   |-- subject_grade_combiner_product.py
+|   |   |   |   |-- subject_grade_combiner_sqrt.py
+|   |   |   |   `-- subject_grade_combiner_weighted_geo.py
+|   |   |   `-- similarity
+|   |   |       |-- __init__.py
+|   |   |       `-- neighbor_search.py
+|   |   `-- repositories
+|   |       |-- __init__.py
+|   |       |-- classification_analysis_repository.py
+|   |       |-- classifier_model_repository.py
+|   |       |-- knn_graphsage_classifier_model_repository.py
+|   |       |-- postgres_health_repository.py
+|   |       |-- postgres_user_repository.py
+|   |       `-- voting_model_repository.py
+|   |-- interfaces
+|   |   |-- __init__.py
+|   |   |-- repositories
+|   |   |   |-- __init__.py
+|   |   |   |-- classification_analysis_repository_interface.py
+|   |   |   |-- classifier_model_repository_interface.py
+|   |   |   |-- health_repository_interface.py
+|   |   |   `-- user_repository_interface.py
+|   |   `-- services
+|   |       |-- __init__.py
+|   |       |-- classification_history_service_interface.py
+|   |       |-- health_service_interface.py
+|   |       |-- image_classifier_service_interface.py
+|   |       |-- image_storage_service_interface.py
+|   |       `-- user_service_interface.py
+|   |-- presentation
+|   |   |-- __init__.py
+|   |   |-- mappers
+|   |   |   |-- __init__.py
+|   |   |   `-- user_response_mapper.py
+|   |   `-- routes
+|   |       |-- __init__.py
+|   |       |-- auth_routes.py
+|   |       |-- default_routes.py
+|   |       |-- model_routes.py
+|   |       |-- swagger_routes.py
+|   |       `-- user_routes.py
+|   |-- settings.py
+|   `-- static
+|       `-- openapi.yaml
+|-- components
+|   |-- auth-modals.tsx
+|   |-- github-avatar.tsx
+|   |-- header-with-nav.tsx
+|   |-- image-classifier.tsx
+|   |-- notification.tsx
+|   |-- password-input.tsx
+|   |-- profile-modal.tsx
+|   |-- theme-provider.tsx
+|   |-- theme-toggle.tsx
+|   `-- ui
+|       |-- accordion.tsx
+|       |-- alert-dialog.tsx
+|       |-- alert.tsx
+|       |-- aspect-ratio.tsx
+|       |-- avatar.tsx
+|       |-- badge.tsx
+|       |-- breadcrumb.tsx
+|       |-- button-group.tsx
+|       |-- button.tsx
+|       |-- calendar.tsx
+|       |-- card.tsx
+|       |-- carousel.tsx
+|       |-- chart.tsx
+|       |-- checkbox.tsx
+|       |-- collapsible.tsx
+|       |-- command.tsx
+|       |-- context-menu.tsx
+|       |-- dialog.tsx
+|       |-- drawer.tsx
+|       |-- dropdown-menu.tsx
+|       |-- empty.tsx
+|       |-- field.tsx
+|       |-- form.tsx
+|       |-- hover-card.tsx
+|       |-- input-group.tsx
+|       |-- input-otp.tsx
+|       |-- input.tsx
+|       |-- item.tsx
+|       |-- kbd.tsx
+|       |-- label.tsx
+|       |-- menubar.tsx
+|       |-- navigation-menu.tsx
+|       |-- pagination.tsx
+|       |-- popover.tsx
+|       |-- progress.tsx
+|       |-- radio-group.tsx
+|       |-- resizable.tsx
+|       |-- scroll-area.tsx
+|       |-- select.tsx
+|       |-- separator.tsx
+|       |-- sheet.tsx
+|       |-- sidebar.tsx
+|       |-- skeleton.tsx
+|       |-- slider.tsx
+|       |-- sonner.tsx
+|       |-- spinner.tsx
+|       |-- switch.tsx
+|       |-- table.tsx
+|       |-- tabs.tsx
+|       |-- textarea.tsx
+|       |-- toast.tsx
+|       |-- toaster.tsx
+|       |-- toggle-group.tsx
+|       |-- toggle.tsx
+|       |-- tooltip.tsx
+|       |-- use-mobile.tsx
+|       `-- use-toast.ts
+|-- components.json
+|-- data
+|   `-- users.json
+|-- env
+|-- hooks
+|   |-- use-mobile.ts
+|   `-- use-toast.ts
+|-- lib
+|   |-- api
+|   |   |-- auth.ts
+|   |   |-- history.mapper.ts
+|   |   |-- model.mapper.ts
+|   |   |-- model.ts
+|   |   `-- users.ts
+|   |-- types
+|   |   `-- classification.ts
+|   `-- utils.ts
+|-- middleware.ts
+|-- ml_kernel
+|-- next-env.d.ts
+|-- next.config.mjs
+|-- package-lock.json
+|-- package.json
+|-- pnpm-lock.yaml
+|-- postcss.config.cjs
+|-- postcss.config.mjs
+|-- project_structure.txt
+|-- public
+|   |-- _redirects
+|   |-- icon.svg
+|   |-- logo.png
+|   |-- placeholder-logo.png
+|   |-- placeholder-logo.svg
+|   |-- placeholder-user.jpg
+|   |-- placeholder.jpg
+|   `-- placeholder.svg
+|-- structure.txt
+|-- styles
+|   `-- globals.css
+|-- tailwind.config.ts
+`-- tsconfig.json
+
+46 directories, 217 files

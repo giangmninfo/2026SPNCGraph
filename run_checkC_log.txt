@@ -1,0 +1,86 @@
+Loading data...
+Split: train=6750, val=965, test=1929
+
+============================================================
+C0 — Val attachment homophily check
+============================================================
+  Leakage check: train∩test=0, train∩val=0, val∩test=0  [all must be 0]
+
+  Val attachment: 5790 edges, same-subject=78.2% (expected ~76% if no filter)
+  Test attachment: 11574 edges, same-subject=77.2%
+
+  5 val node neighborhood examples (k=6, pure cosine attachment):
+  Val node Val subject                         Neighbor subjects (all k neighbors)
+  -------- ----------------------------------- --------------------------------------------------
+  node 0   Âm nhạc                             ✗ MIXED: ['Công nghệ', 'Công nghệ', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc']
+  node 1   Âm nhạc                             ✓ ALL SAME: ['Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc']
+  node 2   Âm nhạc                             ✓ ALL SAME: ['Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc']
+  node 3   Âm nhạc                             ✓ ALL SAME: ['Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc']
+  node 4   Âm nhạc                             ✗ MIXED: ['Công nghệ', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc', 'Âm nhạc']
+
+  Val-test gap analysis (seed=42, SAGE Mean, k=6):
+    val_acc=90.36%, test_acc=88.13%, gap=2.23pp
+    Verdict: gap is expected (val n=965 vs test n=1929; k* selected on val → small upward bias)
+
+============================================================
+C1 — SAGE Skip (concat[h2, x_raw_896] before head), 5 seeds
+============================================================
+    seed=42: val=89.84%, test=88.34%, grade=67.34%
+    seed=123: val=90.16%, test=88.13%, grade=65.79%
+    seed=456: val=89.95%, test=88.28%, grade=66.77%
+    seed=789: val=90.05%, test=87.61%, grade=65.58%
+    seed=2024: val=89.74%, test=88.39%, grade=65.47%
+  → val=89.95±0.15%, test=88.15±0.28%
+
+============================================================
+C2 — SAGE 1-layer, 5 seeds
+============================================================
+    seed=42: val=92.02%, test=89.94%, grade=66.72%
+    seed=123: val=91.81%, test=89.89%, grade=66.87%
+    seed=456: val=91.92%, test=90.25%, grade=66.36%
+    seed=789: val=91.92%, test=90.15%, grade=66.46%
+    seed=2024: val=91.81%, test=90.57%, grade=65.84%
+  → val=91.90±0.08%, test=90.16±0.24%
+
+============================================================
+C3 — k_attach sweep {6,12,24} (k_train=6 fixed), seed=42
+============================================================
+  k_attach= 6: val=90.36%, test=88.13%
+  k_attach=12: val=88.29%, test=87.61%
+  k_attach=24: val=88.08%, test=87.45%
+  → k_attach* = 6  (val=90.36%) [selected by VAL]
+
+C3 — 5 seeds with k_attach*=6
+    seed=42: val=90.36%, test=88.13%, grade=65.16%
+    seed=123: val=90.05%, test=87.71%, grade=66.10%
+    seed=456: val=89.64%, test=87.66%, grade=65.89%
+    seed=789: val=89.43%, test=87.87%, grade=67.34%
+    seed=2024: val=89.95%, test=87.66%, grade=66.15%
+  → val=89.89±0.33%, test=87.81±0.18%
+
+============================================================
+Error categorization fix — adding 'other' group
+============================================================
+  Old: {'visual_sim': 0.0, 'interdisciplinary': 5.2, 'noise': 39.3, 'imbalance': 14.8}  (sum=59.3%)
+  Fixed: {'visual_sim': 0.0, 'interdisciplinary': 5.2, 'noise': 39.3, 'imbalance': 14.8, 'other': 40.7}  (sum=100.0%)
+  'other' = errors where: conf≤0.85 AND class support≥80 AND not interdisciplinary
+
+============================================================
+DECISION RULES SUMMARY
+============================================================
+  Fusion MLP baseline: 92.97%  (target: ≥ this - 0.3pp = 92.67%)
+  SAGE Mean (Khung B): 87.81%
+
+  C1 Skip        : test=88.15±0.28%  (Δ vs FusionMLP=-4.82pp)  → still below FusionMLP
+  C2 1-layer     : test=90.16±0.24%  (Δ vs FusionMLP=-2.81pp)  → still below FusionMLP
+  C3 k_attach*   : test=87.81±0.18%  (Δ vs FusionMLP=-5.16pp)  → still below FusionMLP
+
+  → RULE 3: Không biến thể nào đạt → negative result xác nhận với độ tin cao nhất
+            Viết v7 theo hướng A; toàn bảng C vào bài như bằng chứng
+            'standard remedies do not close the gap'
+
+============================================================
+Saved: d:\SPNC_gnnclassifier-main\results_khungB.json
+  Added: diagnostics_C (C0, C1_skip, C2_1layer, C3_k_attach)
+  Fixed: errors_pct now has 5 groups (sum=100%)
+============================================================

@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+/* Removed @import "tailwindcss" which was causing @utility slide-in-from-right-* parsing errors */
+@layer base, components, utilities;
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Light (default) theme — friendly blue tones */
+  --background: hsl(210 60% 98%);
+  --foreground: hsl(213 28% 12%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: oklch(0.15 0 0);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: oklch(0.15 0 0);
+  --primary: hsl(210 90% 55%); /* vivid blue */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: hsl(210 35% 95%);
+  --secondary-foreground: oklch(0.15 0 0);
+  --muted: hsl(210 25% 96%);
+  --muted-foreground: oklch(0.5 0.01 240);
+  --accent: hsl(196 85% 45%); /* teal-ish accent */
+  --accent-foreground: oklch(0.98 0 0);
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: hsl(210 30% 94%);
+  --input: hsl(210 30% 94%);
+  --ring: hsl(210 90% 55%);
+  --chart-1: hsl(210 90% 55%);
+  --chart-2: hsl(204 90% 60%);
+  --chart-3: hsl(200 85% 50%);
+  --chart-4: hsl(210 40% 80%);
+  --chart-5: hsl(208 50% 90%);
+  --radius: 0.75rem;
+  --sidebar: hsl(210 100% 99%);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: hsl(210 70% 40%);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: hsl(200 80% 50%);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: hsl(210 40% 92%);
+  --sidebar-ring: hsl(210 90% 70%);
+}
+
+.dark {
+  /* Dark theme — deep navy with vivid blue accents */
+  --background: hsl(220 30% 6%);
+  --foreground: hsl(210 90% 96%);
+  --card: hsl(220 30% 8%);
+  --card-foreground: oklch(0.95 0.005 240);
+  --popover: hsl(220 30% 8%);
+  --popover-foreground: oklch(0.95 0.005 240);
+  --primary: hsl(210 100% 60%);
+  --primary-foreground: oklch(0.12 0.01 240);
+  --secondary: hsl(210 30% 16%);
+  --secondary-foreground: oklch(0.95 0.005 240);
+  --muted: hsl(210 30% 16%);
+  --muted-foreground: oklch(0.6 0.01 240);
+  --accent: hsl(196 85% 45%);
+  --accent-foreground: oklch(0.95 0.005 240);
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: oklch(0.95 0.005 240);
+  --border: hsl(216 20% 12%);
+  --input: hsl(216 20% 12%);
+  --ring: hsl(210 100% 60%);
+  --chart-1: hsl(210 100% 60%);
+  --chart-2: hsl(204 90% 60%);
+  --chart-3: hsl(200 85% 50%);
+  --chart-4: hsl(210 40% 80%);
+  --chart-5: hsl(208 50% 90%);
+  --sidebar: hsl(218 25% 10%);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: hsl(210 60% 40%);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: hsl(200 80% 50%);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: hsl(216 20% 12%);
+  --sidebar-ring: hsl(210 80% 50%);
+}
+
+@theme inline {
+  --font-sans: system-ui, -apple-system, sans-serif;
+  --font-mono: monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border) / 1);
+    outline-color: hsl(var(--ring) / 0.5);
+  }
+  body {
+    background-color: hsl(var(--background) / 1);
+    color: hsl(var(--foreground) / 1);
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer utilities {
+  /* Added animation utilities that were missing from Tailwind v4 */
+  @keyframes slide-in-from-top {
+    from { transform: translateY(-100%); }
+  }
+  @keyframes slide-in-from-right {
+    from { transform: translateX(100%); }
+  }
+  @keyframes slide-in-from-left {
+    from { transform: translateX(-100%); }
+  }
+  @keyframes slide-in-from-bottom {
+    from { transform: translateY(100%); }
+  }
+  @keyframes slide-out-to-right {
+    to { transform: translateX(100%); }
+  }
+  @keyframes slide-out-to-left {
+    to { transform: translateX(-100%); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
+  @keyframes fade-out {
+    to { opacity: 0; }
+  }
+  @keyframes zoom-in {
+    from { transform: scale(0.95); }
+  }
+  @keyframes zoom-out {
+    to { transform: scale(0.95); }
+  }
+
+  .animate-in { animation-fill-mode: both; }
+  .animate-out { animation-fill-mode: both; animation-direction: reverse; }
+  .fade-in-0 { animation: fade-in 0.2s ease-out; }
+  .fade-out-0 { animation: fade-out 0.2s ease-out; }
+  .zoom-in-95 { animation: zoom-in 0.2s ease-out; }
+  .zoom-out-95 { animation: zoom-out 0.2s ease-out; }
+  .slide-in-from-top-2 { animation: slide-in-from-top 0.2s ease-out; }
+  .slide-in-from-right-2 { animation: slide-in-from-right 0.2s ease-out; }
+  .slide-in-from-left-2 { animation: slide-in-from-left 0.2s ease-out; }
+  .slide-in-from-bottom-2 { animation: slide-in-from-bottom 0.2s ease-out; }
+  .slide-in-from-right-52 { animation: slide-in-from-right 0.5s ease-out; }
+  .slide-in-from-left-52 { animation: slide-in-from-left 0.5s ease-out; }
+  .slide-out-to-right { animation: slide-out-to-right 0.2s ease-in forwards; }
+  .slide-out-to-left { animation: slide-out-to-left 0.2s ease-in forwards; }
+  /* removed problematic direction utilities that caused @utility direction-* error */
+}

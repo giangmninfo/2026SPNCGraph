@@ -1,0 +1,105 @@
+name: Build and Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Docker Login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ vars.ACR_LOGIN_SERVER }}
+          username: ${{ vars.ACR_USERNAME }}
+          password: ${{ vars.ACR_PASSWORD }}
+
+      - name: Build and Push Backend Image
+        run: |
+          docker build -t ${{ vars.ACR_LOGIN_SERVER }}/gnn-backend:final ./backend
+          docker push ${{ vars.ACR_LOGIN_SERVER }}/gnn-backend:final
+
+  deploy-backend:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose to VM
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ vars.VM_IP }}
+          username: anhlh345
+          key: ${{ vars.SSH_PRIVATE_KEY }}
+          source: "backend/docker-compose.yml"
+          # Target: We copy it to the home directory on the VM
+          target: "/home/anhlh345/"
+          strip_components: 1
+
+      - name: SSH and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.VM_IP }}
+          username: anhlh345
+          key: ${{ vars.SSH_PRIVATE_KEY }}
+          script: |
+            # 1. Login
+            docker login ${{ vars.ACR_LOGIN_SERVER }} -u ${{ vars.ACR_USERNAME }} -p ${{ vars.ACR_PASSWORD }}
+            docker image prune -a -f
+
+            # 2. Pull the image
+            docker pull ${{ vars.ACR_LOGIN_SERVER }}/gnn-backend:final
+
+            # 3. Create a small string of all your secrets to reuse
+            export SECRETS="ACR_LOGIN_SERVER=${{ vars.ACR_LOGIN_SERVER }} \
+            DATABASE_URL='${{ secrets.DATABASE_URL }}' \
+            SUPABASE_URL='${{ secrets.SUPABASE_URL }}' \
+            SUPABASE_SERVICE_ROLE_KEY='${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}' \
+            JWT_SECRET_KEY='${{ secrets.JWT_SECRET_KEY }}'"
+            
+            # 4. Use the secrets for DOWN (stops the warnings)
+            eval $SECRETS docker-compose -f /home/anhlh345/docker-compose.yml down || true
+
+            # 5. Use the secrets for UP (starts the app)
+            eval $SECRETS docker-compose -f /home/anhlh345/docker-compose.yml up -d
+
+            # 6. Maintenance
+            docker image prune -a -f
+
+  deploy-frontend:
+    needs: deploy-backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Install pnpm directly to avoid ENOENT errors
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install and Build
+        run: |
+          rm -rf .next node_modules
+          pnpm install
+          cp .env.ci .env.production
+          pnpm run build
+
+      # Deploy using 'npx' instead of the broken GitHub Action
+      - name: Deploy to Netlify
+        run: npx netlify-cli deploy --dir=.next --prod
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

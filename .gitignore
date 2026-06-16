@@ -1,0 +1,85 @@
+# Node
+node_modules/
+
+# Next.js
+.next/
+out/
+dist/
+
+# env
+.env
+.env.local
+.env.*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# editor
+.vscode/
+.idea/
+
+# build / cache
+*.tsbuildinfo
+.cache/
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Turbopack / build cache
+.turbo/
+
+# pnpm
+pnpm-lock.yaml
+
+# package-lock (if using npm alongside pnpm)
+package-lock.json
+
+# Local environment
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE temp files
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+__pycache__/
+*.pyc
+*.venv
+
+# ML artifacts (large binary files)
+*.pt
+*.pth
+*.pkl
+*.npy
+*.bin
+backend/infrastructure/ml/artifacts/GNN_single_v1/
+backend/infrastructure/ml/artifacts/GNN_dual_v1/
+backend/infrastructure/ml/artifacts/GNN_dual_v2/
+
+# Experiment outputs
+results_khungB.json
+split_indices.json
+run_khungB_log.txt
+run_khungB_err.txt
+run_checkC_log.txt
+run_checkC_err.txt
+tsne_coords.npy
+
+# CI env (contains server IP)
+.env.ci
+
+# Claude memory
+.claude/
+

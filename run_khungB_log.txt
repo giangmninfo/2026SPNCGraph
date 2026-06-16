@@ -1,0 +1,244 @@
+Loading data...
+Split: train=6750, val=965, test=1929
+
+=== k-sweep (seed=42, val acc) ===
+  k= 6: val_acc=90.36%  (ei_tr=40500)
+  k= 8: val_acc=89.33%  (ei_tr=54000)
+  k=12: val_acc=88.08%  (ei_tr=81000)
+  k=18: val_acc=87.36%  (ei_tr=121500)
+  k=24: val_acc=86.22%  (ei_tr=162000)
+  → k* = 6  (val_acc=90.36%)
+
+Building graphs with k*=6...
+  Intra-subj train: 40500 edges, val att: 5790, test att: 11574
+  Train graph: edges=40500, mean_deg=6.00, same_grade=56.0%, same_subj=100.0%
+  Attachment (test): same-subject=77.2%  [Hg2]
+
+=== τ-sweep (seed=42, val acc of SAGE on threshold train graph) ===
+  τ=0.75: val=93.06%, edges=508364
+  τ=0.79: val=92.64%, edges=228222
+  τ=0.83: val=92.23%, edges=92470
+  τ=0.87: val=90.98%, edges=31070
+  → τ* = 0.75  (val_acc=93.06%)
+  Threshold graph: edges=508364, same_subj=46.4%
+  Feature-only kNN: edges=40500, same_subj=76.6%
+
+=== GAT heads sweep (seed=42) ===
+  heads=2: val=86.01%
+  heads=4: val=86.22%
+  heads=8: val=86.74%
+  → best_heads = 8
+
+=== kNN-Voting k sweep (seed=42, val acc) ===
+  knn_k=3: val=85.28%
+  knn_k=5: val=86.22%
+  knn_k=9: val=86.74%
+  knn_k=18: val=84.56%
+  → knn_k* = 9
+
+============================================================
+MAIN MODEL RUNS (5 seeds, Strategy 1 graph, test=1929)
+============================================================
+
+--- sage_mean ---
+    seed=42: subj=88.13%, grade=65.16%, f1=0.831
+    seed=123: subj=87.71%, grade=66.10%, f1=0.826
+    seed=456: subj=87.66%, grade=65.89%, f1=0.825
+    seed=789: subj=87.87%, grade=67.34%, f1=0.826
+    seed=2024: subj=87.66%, grade=66.15%, f1=0.825
+  → 87.81±0.18% subj, grade=66.13%, F1=0.827
+    seed=42: subj=86.83%, grade=62.52%, f1=0.811
+    seed=123: subj=86.94%, grade=63.66%, f1=0.810
+    seed=456: subj=86.99%, grade=62.10%, f1=0.815
+    seed=789: subj=86.31%, grade=62.78%, f1=0.803
+    seed=2024: subj=86.88%, grade=61.48%, f1=0.809
+  attn_sage: 86.79±0.24%
+
+--- gcn ---
+    seed=42: subj=84.24%, grade=57.18%, f1=0.782
+    seed=123: subj=83.41%, grade=56.97%, f1=0.775
+    seed=456: subj=83.72%, grade=55.88%, f1=0.775
+    seed=789: subj=83.72%, grade=56.45%, f1=0.781
+    seed=2024: subj=83.83%, grade=57.18%, f1=0.774
+  → 83.78±0.27% subj, grade=56.73%, F1=0.778
+
+--- gat ---
+    seed=42: subj=84.45%, grade=55.94%, f1=0.788
+    seed=123: subj=84.45%, grade=55.94%, f1=0.787
+    seed=456: subj=84.24%, grade=56.19%, f1=0.786
+    seed=789: subj=84.60%, grade=56.14%, f1=0.791
+    seed=2024: subj=84.34%, grade=56.56%, f1=0.785
+  → 84.42±0.12% subj, grade=56.15%, F1=0.787
+
+--- sage_lstm ---
+    seed=42: subj=85.38%, grade=58.01%, f1=0.793
+    seed=123: subj=85.02%, grade=58.84%, f1=0.789
+    seed=456: subj=85.43%, grade=58.16%, f1=0.795
+    seed=789: subj=84.97%, grade=57.65%, f1=0.793
+    seed=2024: subj=84.29%, grade=58.68%, f1=0.780
+  → 85.02±0.41% subj, grade=58.27%, F1=0.790
+
+--- sage_pool ---
+    seed=42: subj=87.71%, grade=63.82%, f1=0.828
+    seed=123: subj=88.23%, grade=62.78%, f1=0.832
+    seed=456: subj=87.56%, grade=63.50%, f1=0.824
+    seed=789: subj=88.08%, grade=63.19%, f1=0.829
+    seed=2024: subj=87.71%, grade=64.49%, f1=0.826
+  → 87.86±0.25% subj, grade=63.56%, F1=0.828
+
+--- fusion_mlp (no graph) ---
+    seed=42: subj=92.85%, grade=69.62%
+    seed=123: subj=93.05%, grade=69.41%
+    seed=456: subj=93.16%, grade=69.36%
+    seed=789: subj=92.90%, grade=68.43%
+    seed=2024: subj=92.90%, grade=69.83%
+
+--- text_only ---
+    seed=42: subj=66.61%
+    seed=123: subj=67.39%
+    seed=456: subj=67.55%
+    seed=789: subj=67.39%
+    seed=2024: subj=67.39%
+
+--- image_only ---
+    seed=42: subj=85.74%
+    seed=123: subj=85.74%
+    seed=456: subj=85.74%
+    seed=789: subj=85.74%
+    seed=2024: subj=85.74%
+
+--- knn_voting ---
+    seed=42: subj=84.50%
+    seed=123: subj=84.50%
+    seed=456: subj=84.50%
+    seed=789: subj=84.50%
+    seed=2024: subj=84.50%
+
+=== Graph comparison (feature-only, threshold) ===
+
+  feature_only:
+    seed=42: subj=89.68%
+    seed=123: subj=89.74%
+    seed=456: subj=89.99%
+    seed=789: subj=90.05%
+    seed=2024: subj=90.57%
+  feature_only: 90.01±0.31%
+
+  threshold:
+    seed=42: subj=92.07%
+    seed=123: subj=92.02%
+    seed=456: subj=92.02%
+    seed=789: subj=91.76%
+    seed=2024: subj=91.91%
+  threshold: 91.95±0.11%
+
+=== Random edge control ===
+  seed=42: subj=90.98%
+  seed=123: subj=90.10%
+  seed=456: subj=90.15%
+  seed=789: subj=89.63%
+  seed=2024: subj=89.99%
+  Random control: 90.17±0.44%
+
+=== Upper bounds (label-informed, eval on new test 1929) ===
+
+  semi_transductive (edges=76511):
+    seed=42: subj=97.30%
+    seed=123: subj=97.56%
+    seed=456: subj=97.46%
+    seed=789: subj=97.51%
+    seed=2024: subj=97.30%
+  semi_transductive: 97.43±0.11%
+
+  metadata (edges=86796):
+    seed=42: subj=98.39%
+    seed=123: subj=98.24%
+    seed=456: subj=98.60%
+    seed=789: subj=98.44%
+    seed=2024: subj=98.55%
+  metadata: 98.44±0.13%
+
+=== Statistics ===
+  ours vs attn_sage: Δ=+1.02pp, p=0.0042, p_bon=0.0295 *, d=2.93
+  ours vs gcn: Δ=+4.02pp, p=0.0000, p_bon=0.0000 ***, d=22.95
+  ours vs gat: Δ=+3.39pp, p=0.0000, p_bon=0.0000 ***, d=21.75
+  ours vs fusion_mlp: Δ=-5.16pp, p=0.0000, p_bon=0.0000 ***, d=-19.15
+  ours vs knn_voting: Δ=+3.31pp, p=0.0000, p_bon=0.0000 ***, d=18.60
+  ours vs text_only: Δ=+20.54pp, p=0.0000, p_bon=0.0000 ***, d=41.00
+  ours vs image_only: Δ=+2.06pp, p=0.0000, p_bon=0.0001 ***, d=11.60
+
+=== Table 1 per-class (seed=42, sage_mean, test) ===
+  Công nghệ                                     P=0.966 R=0.973 F1=0.969 N=259
+  Giáo dục quốc phòng và an ninh                P=0.643 R=0.735 F1=0.686 N=49
+  Hoạt động trải nghiệm, hướng nghiệp           P=0.754 R=0.942 F1=0.838 N=52
+  Hóa học                                       P=0.818 R=0.735 F1=0.774 N=49
+  Lịch sử                                       P=0.705 R=0.642 F1=0.672 N=67
+  Mĩ thuật                                      P=0.951 R=0.889 F1=0.919 N=369
+  Ngữ Văn                                       P=0.625 R=0.800 F1=0.702 N=25
+  Sinh học                                      P=0.777 R=0.850 F1=0.812 N=127
+  Tin học                                       P=0.848 R=0.794 F1=0.820 N=175
+  Tiếng Anh                                     P=1.000 R=0.950 F1=0.974 N=221
+  Toán                                          P=0.884 R=0.955 F1=0.918 N=199
+  Vật Lý                                        P=0.885 R=0.784 F1=0.832 N=148
+  Âm nhạc                                       P=0.940 R=0.965 F1=0.952 N=114
+  Địa lí                                        P=0.708 R=0.840 F1=0.768 N=75
+  Macro: {'prec': 0.822, 'rec': 0.847, 'f1': 0.831}
+
+=== Calibration ===
+  T* = 1.418,  ECE before = 0.0501,  ECE after = 0.0240
+
+=== Error analysis (seed=42, sage_mean) ===
+  Total errors: 229 / 1929  (11.9%)
+  Error types: {'visual_sim': 0.0, 'interdisciplinary': 5.2, 'noise': 39.3, 'imbalance': 14.8}
+
+=== t-SNE (embeddings, seed=42) ===
+  t-SNE saved to tsne_coords.npy  shape=(1929, 2)
+
+=== Aggregator ablation ===
+
+  mean_Ag1:
+    seed=42: subj=88.13%, grade=65.16%, f1=0.831
+    seed=123: subj=87.71%, grade=66.10%, f1=0.826
+    seed=456: subj=87.66%, grade=65.89%, f1=0.825
+    seed=789: subj=87.87%, grade=67.34%, f1=0.826
+    seed=2024: subj=87.66%, grade=66.15%, f1=0.825
+  → 87.81±0.18%
+
+  pool_Ag2:
+    seed=42: subj=87.71%, grade=63.82%, f1=0.828
+    seed=123: subj=88.23%, grade=62.78%, f1=0.832
+    seed=456: subj=87.56%, grade=63.50%, f1=0.824
+    seed=789: subj=88.08%, grade=63.19%, f1=0.829
+    seed=2024: subj=87.71%, grade=64.49%, f1=0.826
+  → 87.86±0.25%
+
+  lstm_Ag3:
+    seed=42: subj=85.38%, grade=58.01%, f1=0.793
+    seed=123: subj=85.02%, grade=58.84%, f1=0.789
+    seed=456: subj=85.43%, grade=58.16%, f1=0.795
+    seed=789: subj=84.97%, grade=57.65%, f1=0.793
+    seed=2024: subj=84.29%, grade=58.68%, f1=0.780
+  → 85.02±0.41%
+
+
+============================================================
+Saved: d:\SPNC_gnnclassifier-main\results_khungB.json
+============================================================
+
+=== FINAL SUMMARY (test=1929 nodes) ===
+Model                        SubjAcc     SD   Grade     F1
+------------------------------------------------------------
+  sage_mean                  87.81  0.18   66.13  0.827
+  attn_sage                  86.79  0.24   62.51  0.810
+  gcn                        83.78  0.27   56.73  0.778
+  gat                        84.42  0.12   56.15  0.787
+  fusion_mlp                 92.97  0.12   69.33  0.906
+  knn_voting                 84.50  0.00   60.65  0.793
+  text_only                  67.27  0.33   53.67  0.580
+  image_only                 85.74  0.00   55.57  0.801
+
+  Random edge ctrl:        90.17 ± 0.44
+
+  Upper bounds (label-informed):
+    semi_transductive          97.43 ± 0.11
+    metadata                   98.44 ± 0.13

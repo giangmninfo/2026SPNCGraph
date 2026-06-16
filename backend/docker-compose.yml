@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # 1. The GNN Backend
+  backend:
+    # Use the image name you push to Azure ACR
+    image: ${ACR_LOGIN_SERVER}/gnn-backend:final
+    container_name: gnn-backend-app
+    restart: always
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    ports:
+      - "8000:8000"
+    # Mount a volume to keep your GNN model weights or logs safe
+    volumes:
+      - ./backend/models:/app/models
+    networks:
+      - gnn-network
+
+  # 2. Add other services here later (like a database or frontend)
+  # frontend:
+  #   image: ${ACR_LOGIN_SERVER}/gnn-frontend:latest
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     - gnn-network
+
+networks:
+  gnn-network:
+    driver: bridge

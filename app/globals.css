@@ -1,0 +1,301 @@
+@import "tailwindcss";
+
+:root {
+  /* Light (default) theme — friendly blue tones */
+  --background: hsl(210 60% 98%);
+  --foreground: hsl(213 28% 12%);
+  --card: hsl(0 0% 100%);
+  --primary: hsl(210 90% 55%); /* vivid blue */
+  --secondary: hsl(210 35% 95%);
+  --accent: hsl(196 85% 45%); /* teal-ish accent */
+  --destructive: hsl(0 84.2% 60.2%);
+  --muted: hsl(210 25% 96%);
+  --muted-foreground: hsl(215.4 16.3% 46.9%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(222.2 84% 4.9%);
+  --border: hsl(210 30% 94%);
+  --input: hsl(210 30% 94%);
+  --ring: hsl(210 90% 55%);
+  --radius: 0.5rem;
+
+  /* Additional accent colors for elements */
+  --success: hsl(142 71% 45%);
+  --warning: hsl(38 92% 50%);
+  --info: hsl(210 90% 55%);
+  /* Modal-specific colors: white in light mode, black in dark mode */
+  --modal-background: hsl(0 0% 100%);
+  --modal-foreground: hsl(213 28% 12%);
+}
+
+.dark {
+  /* Dark theme — deep navy with vivid blue accents */
+  --background: hsl(220 30% 6%);
+  --foreground: hsl(210 90% 96%);
+  --card: hsl(220 30% 8%);
+  --primary: hsl(210 100% 60%);
+  --secondary: hsl(210 30% 16%);
+  --accent: hsl(196 85% 45%);
+  --destructive: hsl(0 62.8% 30.6%);
+  --muted: hsl(210 30% 16%);
+  --muted-foreground: hsl(215 20.2% 65.1%);
+  --popover: hsl(220 30% 8%);
+  --popover-foreground: hsl(210 90% 96%);
+  --border: hsl(216 20% 12%);
+  --input: hsl(216 20% 12%);
+  --ring: hsl(210 100% 60%);
+
+  /* Additional accent colors for dark mode */
+  --success: hsl(142 71% 55%);
+  --warning: hsl(38 92% 55%);
+  --info: hsl(210 100% 60%);
+  /* Modal-specific colors for dark mode */
+  --modal-background: hsl(0 0% 0%);
+  --modal-foreground: hsl(210 90% 96%);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Enhanced input styling with better visibility */
+input {
+  background-color: var(--input);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(210, 100, 255, 0.1);
+  outline: none;
+}
+
+input::placeholder {
+  color: var(--muted-foreground);
+}
+
+.dark input {
+  color: white;
+}
+
+textarea {
+  background-color: var(--input);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(210, 100, 255, 0.1);
+  outline: none;
+}
+
+/* Scrollbar styling for better visibility */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Animations with vibrant effects */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(210, 100, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(210, 100, 255, 0.6);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.animate-slide-out-right {
+  animation: slideOutRight 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Button hover effects */
+.btn-hover {
+  transition: all 0.3s ease;
+}
+
+.btn-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.btn-hover:active {
+  transform: translateY(0);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Link hover effects */
+.link-hover {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.link-hover:hover::after {
+  width: 100%;
+}
+
+/* Modal background helper: ensures modals are white in light mode and black in dark mode */
+.modal-bg {
+  background-color: var(--modal-background);
+  color: var(--modal-foreground);
+}
+
+/* Decorative colorful background (non-intrusive) */
+/* These use fixed, blurred radial gradients so they sit behind page content. */
+body {
+  /* keep existing bg color but allow layers */
+  background-color: var(--background);
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: 0; /* sit behind content */
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: 0.22;
+  transition: opacity 0.3s ease;
+}
+
+/* cool blue glow top-left */
+body::before {
+  left: -10vw;
+  top: -20vh;
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(circle at 30% 30%, hsla(210,90%,60%,0.95) 0%, hsla(210,90%,60%,0.35) 25%, transparent 60%);
+}
+
+/* teal accent bottom-right */
+body::after {
+  right: -8vw;
+  bottom: -18vh;
+  width: 55vw;
+  height: 55vh;
+  background: radial-gradient(circle at 70% 70%, hsla(196,85%,45%,0.9) 0%, hsla(196,85%,45%,0.3) 30%, transparent 65%);
+}
+
+/* ensure main layout elements sit above the decorative blobs */
+.container,
+header,
+main,
+footer,
+.NotificationContainer,
+.notification,
+.card-hover {
+  position: relative;
+  z-index: 1;
+}
+
+/* subtle hero lift for the page title area */
+.text-center.space-y-4 {
+  background: linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.02) 100%);
+  padding: 1rem;
+  border-radius: calc(var(--radius) + 0.25rem);
+}
+
+/* small primary button helper if components need it */
+.primary-btn {
+  background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 80%, white 20%));
+  color: white;
+  border: none;
+}

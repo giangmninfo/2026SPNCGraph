@@ -1,0 +1,307 @@
+{
+  "_meta": {
+    "generated": "2026-06-12",
+    "source": "results_khungB.json + extract_paper_numbers.py + run_check_C.py",
+    "split": "train=6750 / val=965 / test=1929 (frozen, split_indices.json)",
+    "seeds": [42, 123, 456, 789, 2024],
+    "t95_df4": 2.7764
+  },
+
+  "table2_main_results": {
+    "_note": "Inductive eval, test=1929, 5 seeds. SubjAcc = 14-class subject accuracy.",
+    "fusion_mlp": {
+      "per_seed_subj": [92.846, 93.0534, 93.1571, 92.8979, 92.8979],
+      "mean": 92.97, "sd": 0.12,
+      "ci95": [92.83, 93.12],
+      "grade_mean": 69.33,
+      "prec_macro": 0.906, "rec_macro": 0.906, "f1_macro": 0.906
+    },
+    "sage_mean": {
+      "per_seed_subj": [88.1286, 87.7138, 87.662, 87.8694, 87.662],
+      "mean": 87.81, "sd": 0.18,
+      "ci95": [87.59, 88.03],
+      "grade_mean": 66.13,
+      "prec_macro": 0.818, "rec_macro": 0.842, "f1_macro": 0.827
+    },
+    "attn_sage": {
+      "per_seed_subj": [86.8326, 86.9362, 86.9881, 86.3142, 86.8844],
+      "mean": 86.79, "sd": 0.24,
+      "ci95": [86.49, 87.09],
+      "grade_mean": 62.51,
+      "prec_macro": 0.798, "rec_macro": 0.829, "f1_macro": 0.810
+    },
+    "gcn": {
+      "per_seed_subj": [84.2405, 83.4111, 83.7221, 83.7221, 83.8258],
+      "mean": 83.78, "sd": 0.27,
+      "ci95": [83.45, 84.12],
+      "grade_mean": 56.73,
+      "prec_macro": 0.776, "rec_macro": 0.787, "f1_macro": 0.778
+    },
+    "gat": {
+      "per_seed_subj": [84.4479, 84.4479, 84.2405, 84.6034, 84.3442],
+      "mean": 84.42, "sd": 0.12,
+      "ci95": [84.27, 84.57],
+      "grade_mean": 56.15,
+      "prec_macro": 0.786, "rec_macro": 0.796, "f1_macro": 0.788
+    },
+    "sage_pool": {
+      "per_seed_subj": [87.7138, 88.2322, 87.5583, 88.0767, 87.7138],
+      "mean": 87.86, "sd": 0.25,
+      "ci95": [87.55, 88.17],
+      "grade_mean": 63.56,
+      "prec_macro": 0.826, "rec_macro": 0.834, "f1_macro": 0.828
+    },
+    "sage_lstm": {
+      "per_seed_subj": [85.381, 85.0181, 85.4329, 84.9663, 84.2924],
+      "mean": 85.02, "sd": 0.41,
+      "ci95": [84.51, 85.53],
+      "grade_mean": 58.27,
+      "prec_macro": 0.780, "rec_macro": 0.812, "f1_macro": 0.790
+    },
+    "knn_voting": {
+      "per_seed_subj": [84.4997, 84.4997, 84.4997, 84.4997, 84.4997],
+      "mean": 84.50, "sd": 0.00,
+      "ci95": [84.50, 84.50],
+      "grade_mean": 60.65,
+      "prec_macro": 0.793, "rec_macro": 0.793, "f1_macro": 0.793
+    },
+    "text_only": {
+      "per_seed_subj": [66.6148, 67.3924, 67.548, 67.3924, 67.3924],
+      "mean": 67.27, "sd": 0.33,
+      "ci95": [66.86, 67.68],
+      "grade_mean": 53.67,
+      "prec_macro": 0.580, "rec_macro": 0.580, "f1_macro": 0.580
+    },
+    "image_only": {
+      "per_seed_subj": [85.7439, 85.7439, 85.7439, 85.7439, 85.7439],
+      "mean": 85.74, "sd": 0.00,
+      "ci95": [85.74, 85.74],
+      "grade_mean": 55.57,
+      "prec_macro": 0.801, "rec_macro": 0.801, "f1_macro": 0.801
+    }
+  },
+
+  "table3_pairwise_stats": {
+    "_note": "ours = sage_mean. n=5 seeds. Bonferroni n_comparisons=7.",
+    "sage_mean_vs_attn_sage": {
+      "delta_pp": 1.016, "ci95": [0.586, 1.446],
+      "t": 5.867, "p": 0.0042, "p_bonferroni": 0.0295, "sig": "*", "cohens_d": 2.934
+    },
+    "sage_mean_vs_gcn": {
+      "delta_pp": 4.023, "ci95": [3.805, 4.241],
+      "t": 45.892, "p": "<0.001", "p_bonferroni": "<0.001", "sig": "***", "cohens_d": 22.946
+    },
+    "sage_mean_vs_gat": {
+      "delta_pp": 3.390, "ci95": [3.197, 3.584],
+      "t": 43.501, "p": "<0.001", "p_bonferroni": "<0.001", "sig": "***", "cohens_d": 21.750
+    },
+    "sage_mean_vs_fusion_mlp": {
+      "delta_pp": -5.163, "ci95": [-5.498, -4.829],
+      "t": -38.302, "p": "<0.001", "p_bonferroni": "<0.001", "sig": "***", "cohens_d": -19.151
+    },
+    "sage_mean_vs_knn_voting": {
+      "delta_pp": 3.307, "ci95": [3.087, 3.528],
+      "t": 37.205, "p": "<0.001", "p_bonferroni": "<0.001", "sig": "***", "cohens_d": 18.603
+    },
+    "sage_mean_vs_text_only": {
+      "delta_pp": 20.539, "ci95": [19.917, 21.161],
+      "t": 82.005, "p": "<0.001", "p_bonferroni": "<0.001", "sig": "***", "cohens_d": 41.002
+    },
+    "sage_mean_vs_image_only": {
+      "delta_pp": 2.063, "ci95": [1.842, 2.284],
+      "t": 23.209, "p": "<0.001", "p_bonferroni": 0.0001, "sig": "***", "cohens_d": 11.605
+    },
+    "pA_sage_vs_attn": {
+      "_note": "Section 5.3 [pA]",
+      "p": 0.0042, "p_bonferroni": 0.0295
+    }
+  },
+
+  "table1_per_class": {
+    "_note": "sage_mean, seed=42, test=1929",
+    "Công nghệ":                              {"prec": 0.966, "rec": 0.973, "f1": 0.969, "n": 259},
+    "Giáo dục quốc phòng và an ninh":        {"prec": 0.643, "rec": 0.735, "f1": 0.686, "n": 49},
+    "Hoạt động trải nghiệm, hướng nghiệp":   {"prec": 0.754, "rec": 0.942, "f1": 0.838, "n": 52},
+    "Hóa học":                               {"prec": 0.818, "rec": 0.735, "f1": 0.774, "n": 49},
+    "Lịch sử":                               {"prec": 0.705, "rec": 0.642, "f1": 0.672, "n": 67},
+    "Mĩ thuật":                              {"prec": 0.951, "rec": 0.889, "f1": 0.919, "n": 369},
+    "Ngữ Văn":                               {"prec": 0.625, "rec": 0.800, "f1": 0.702, "n": 25},
+    "Sinh học":                              {"prec": 0.777, "rec": 0.850, "f1": 0.812, "n": 127},
+    "Tin học":                               {"prec": 0.848, "rec": 0.794, "f1": 0.820, "n": 175},
+    "Tiếng Anh":                             {"prec": 1.000, "rec": 0.950, "f1": 0.974, "n": 221},
+    "Toán":                                  {"prec": 0.884, "rec": 0.955, "f1": 0.918, "n": 199},
+    "Vật Lý":                                {"prec": 0.885, "rec": 0.784, "f1": 0.832, "n": 148},
+    "Âm nhạc":                               {"prec": 0.940, "rec": 0.965, "f1": 0.952, "n": 114},
+    "Địa lí":                                {"prec": 0.708, "rec": 0.840, "f1": 0.768, "n": 75},
+    "_macro":                                {"prec": 0.822, "rec": 0.847, "f1": 0.831}
+  },
+
+  "fusion_mlp_params": {
+    "linear_896_256": 229632,
+    "linear_256_128": 32896,
+    "head_subject_128_14": 1806,
+    "head_grade_128_3": 387,
+    "total": 264721
+  },
+
+  "table5_graph_stats": {
+    "_note": "train=6750 nodes (Strategy 1 / feature-only / threshold); all=9644 nodes (semi-transductive / metadata)",
+    "strategy1": {
+      "k": 6, "edges": 40500, "mean_deg": 6.00,
+      "same_subj_pct": 100.0, "same_grade_pct": 56.0,
+      "Hs_same_grade_train": 56.0,
+      "Hg2_attach_same_subj": 77.2,
+      "attach_val_edges": 5790, "attach_test_edges": 11574
+    },
+    "feature_only_knn": {
+      "k": 6, "edges": 40500, "mean_deg": 6.00,
+      "same_subj_pct": 76.6, "same_grade_pct": 52.4
+    },
+    "threshold": {
+      "tau": 0.75, "edges": 508364, "mean_deg": 75.31,
+      "same_subj_pct": 46.4, "same_grade_pct": 35.4,
+      "dτ_mean_deg": 75.31
+    },
+    "semi_transductive": {
+      "_note": "Original g2['edge_index'], all 9644 nodes",
+      "edges": 76511, "mean_deg": 7.93,
+      "same_subj_pct": 100.0, "same_grade_pct": 61.4
+    },
+    "metadata": {
+      "_note": "Composite-42 (subject×grade) kNN k=9, all 9644 nodes",
+      "k": 9, "edges": 86796, "mean_deg": 9.00,
+      "same_subj_pct": 100.0, "same_grade_pct": 100.0
+    },
+    "Hg_attach_diff_grade_pct": 46.8,
+    "Hg_attach_same_grade_pct": 53.2
+  },
+
+  "k_sweep": {
+    "_note": "seed=42, SAGE Mean, Strategy 1 graph, val set (n=965)",
+    "6":  90.363,
+    "8":  89.326,
+    "12": 88.083,
+    "18": 87.358,
+    "24": 86.218,
+    "k_star": 6
+  },
+
+  "tau_sweep": {
+    "_note": "seed=42, SAGE Mean, cosine threshold graph, val set",
+    "0.75": 93.057,
+    "0.79": 92.642,
+    "0.83": 92.228,
+    "0.87": 90.984,
+    "tau_star": 0.75
+  },
+
+  "graph_comparison": {
+    "_note": "5 seeds, test=1929",
+    "feature_only": {"mean": 90.00, "sd": 0.31, "per_seed": [89.684, 89.736, 89.995, 90.047, 90.565]},
+    "threshold":    {"mean": 91.95, "sd": 0.11, "per_seed": [92.068, 92.017, 92.017, 91.757, 91.913]},
+    "random_edge":  {"mean": 90.17, "sd": 0.44, "per_seed": [90.980, 90.099, 90.150, 89.632, 89.995], "n_edges": 40500}
+  },
+
+  "upper_bounds": {
+    "_note": "Label-informed, test=1929, 5 seeds",
+    "semi_transductive": {
+      "mean": 97.43, "sd": 0.11,
+      "per_seed": [97.304, 97.564, 97.460, 97.512, 97.304]
+    },
+    "metadata": {
+      "mean": 98.44, "sd": 0.13,
+      "per_seed": [98.393, 98.237, 98.600, 98.445, 98.549]
+    }
+  },
+
+  "calibration": {
+    "_note": "Temperature scaling on sage_mean seed=42, test set",
+    "T_star": 1.4185,
+    "ece_before": 0.0501,
+    "ece_after": 0.0240
+  },
+
+  "error_analysis": {
+    "_note": "sage_mean seed=42, test=1929",
+    "total_errors": 229,
+    "total_pct": 11.9,
+    "groups_pct": {
+      "noise_high_conf": 39.3,
+      "other": 40.7,
+      "imbalance": 14.8,
+      "interdisciplinary": 5.2,
+      "visual_sim": 0.0
+    }
+  },
+
+  "aggregator_ablation": {
+    "_note": "Strategy 1 k=6, test=1929, 5 seeds",
+    "mean_Ag1": {"mean": 87.81, "sd": 0.18, "per_seed": [88.129, 87.714, 87.662, 87.869, 87.662]},
+    "pool_Ag2": {"mean": 87.86, "sd": 0.25, "per_seed": [87.714, 88.232, 87.558, 88.077, 87.714]},
+    "lstm_Ag3": {"mean": 85.02, "sd": 0.41, "per_seed": [85.381, 85.018, 85.433, 84.966, 84.292]}
+  },
+
+  "diagnostics_C": {
+    "C0_val_attachment": {
+      "leakage_train_test": 0, "leakage_train_val": 0, "leakage_val_test": 0,
+      "val_attach_same_subj_pct": 78.2,
+      "test_attach_same_subj_pct": 77.2,
+      "gap_seed42_val_test_pp": 2.23,
+      "verdict": "no_label_leakage — pure cosine, no subject filter"
+    },
+    "C1_skip_connection": {
+      "_note": "concat[h_L, x_raw_896] before head",
+      "val_mean": 89.95, "val_sd": 0.15,
+      "test_mean": 88.15, "test_sd": 0.28,
+      "per_seed_val":  [89.84, 90.16, 89.95, 90.05, 89.74],
+      "per_seed_test": [88.34, 88.13, 88.28, 87.61, 88.39],
+      "delta_vs_sage_mean_pp": 0.34,
+      "delta_vs_fusion_mlp_pp": -4.82
+    },
+    "C2_1layer": {
+      "_note": "1-layer SAGEConv instead of 2",
+      "val_mean": 91.90, "val_sd": 0.08,
+      "test_mean": 90.16, "test_sd": 0.24,
+      "per_seed_val":  [92.02, 91.81, 91.92, 91.92, 91.81],
+      "per_seed_test": [89.94, 89.89, 90.25, 90.15, 90.57],
+      "delta_vs_sage_mean_pp": 2.35,
+      "delta_vs_fusion_mlp_pp": -2.81
+    },
+    "C3_k_attach": {
+      "k_train_fixed": 6,
+      "sweep_seed42": {
+        "6":  {"val": 90.36, "test": 88.13},
+        "12": {"val": 88.29, "test": 87.61},
+        "24": {"val": 88.08, "test": 87.45}
+      },
+      "k_attach_star": 6,
+      "test_mean_5seeds": 87.81, "test_sd_5seeds": 0.18,
+      "delta_vs_fusion_mlp_pp": -5.16
+    },
+    "decision": "RULE_3 — no variant reaches fusion_mlp - 0.3pp; negative result confirmed"
+  },
+
+  "section_41_annotation": {
+    "kappa_s": "N/A — không đo được; xóa câu nhắc đến κs",
+    "kappa_g": "N/A — không đo được; xóa câu nhắc đến κg",
+    "bleu2":   "N/A — text đã embed; xóa câu nhắc đến BLEU-2",
+    "leakage_index": "ZERO — train∩val=0, train∩test=0, val∩test=0",
+    "near_duplicate_cosine_9999": {
+      "val_in_train": 38,
+      "test_in_train": 100,
+      "val_in_test": 7,
+      "test_dup_pct": 5.18,
+      "action_needed": "Quyết định: loại bỏ hoặc ghi limitation (xem ghi chú)"
+    }
+  },
+
+  "section_54_v7_framing": {
+    "best_gnn_inductive": {"model": "sage_mean", "test": 87.81, "sd": 0.18},
+    "best_variant_C":     {"model": "C2_1layer", "test": 90.16, "sd": 0.24},
+    "fusion_mlp":         {"test": 92.97, "sd": 0.12},
+    "gap_best_gnn_to_mlp_pp": -5.16,
+    "gap_C2_to_mlp_pp": -2.81,
+    "semi_transductive_ub": 97.43,
+    "leakage_gain_pp": 9.62
+  }
+}

@@ -1,0 +1,507 @@
+openapi: 3.0.3
+
+info:
+  title: GNN Classifier API
+  version: 0.1.1
+  description: |
+    Default system and infrastructure endpoints.
+    Includes health checks, connectivity tests, and user management.
+
+servers:
+  - url: http://127.0.0.1:8000
+    description: Local development server
+  - url: http://20.89.168.233:8000
+    description: Hosted backend server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ClassificationResult:
+      type: object
+      properties:
+        label:
+          type: string
+        confidence:
+          type: number
+          format: float
+        subject:
+          type: string
+        subject_code:
+          type: string
+        grade:
+          type: integer
+        processing_time_ms:
+          type: number
+          format: float
+        top_predictions:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              confidence:
+                type: number
+                format: float
+              subject:
+                type: string
+              subject_code:
+                type: string
+              grade:
+                type: integer
+
+    ClassificationHistoryItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        image_path:
+          type: string
+        label:
+          type: string
+        confidence:
+          type: number
+          format: float
+        subject:
+          type: string
+        subject_code:
+          type: string
+        grade:
+          type: integer
+        model_variant:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+paths:
+  /users:
+    get:
+        summary: List users
+        description: Returns a list of users.
+        tags:
+          - Users
+        responses:
+          "200":
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: boolean
+                      example: true
+                    data:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/UserResponse"
+    post:
+      summary: Create a user
+      description: Creates a new user in PostgreSQL.
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - full_name
+                - username
+                - email
+                - password
+                - avatar_color
+              properties:
+                full_name:
+                  type: string
+                  example: John Doe
+                username:
+                  type: string
+                  example: johndoe
+                email:
+                  type: string
+                  example: john@example.com
+                password:
+                  type: string
+                  example: secret123
+                avatar_color:
+                  type: string
+                  example: "#00ffaa"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  username:
+                    type: string
+                    example: johndoe
+                  email:
+                    type: string
+                    example: john@example.com
+      components:
+        schemas:
+          UserResponse:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              full_name:
+                type: string
+                example: John Doe
+              username:
+                type: string
+                example: johndoe
+              email:
+                type: string
+                format: email
+                example: john@example.com
+              avatar_color:
+                type: string
+                example: "#FF5733"
+              created_at:
+                type: string
+                format: date-time
+                example: "2025-01-01T12:00:00Z"
+    delete:
+      summary: Delete user (not implemented)
+      tags:
+        - Users
+      responses:
+        "501":
+          description: Not implemented
+    patch:
+      summary: Update user (not implemented)
+      tags:
+        - Users
+      responses:
+        "501":
+          description: Not implemented
+    options:
+      summary: Supported HTTP methods
+      tags:
+        - Users
+      responses:
+        "200":
+          description: OK
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: >
+        Authenticate a user using username or email and password.
+        Returns basic user information on success.
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - identifier
+                - password
+              properties:
+                identifier:
+                  type: string
+                  description: Username or email
+                  example: johndoe@example.com
+                password:
+                  type: string
+                  format: password
+                  example: supersecretpassword
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  username:
+                    type: string
+                    example: johndoe
+                  email:
+                    type: string
+                    example: johndoe@example.com
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid credentials
+        "400":
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing identifier or password
+        "500":
+          description: Internal server error
+
+  /users/availability:
+    get:
+      tags:
+        - Users
+      summary: Check username availability
+      description: >
+        Checks whether a given username is available for registration.
+      operationId: checkUsernameAvailability
+      parameters:
+        - name: username
+          in: query
+          required: true
+          description: Username to check for availability
+          schema:
+            type: string
+            minLength: 1
+            example: johndoe
+      responses:
+        "200":
+          description: Username availability result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available:
+                    type: boolean
+                    example: true
+        "400":
+          description: Missing or invalid username parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: username is required
+
+  /model/classification:
+    post:
+      summary: Run image classification
+      description: Upload an image, classify it, store the image and classification history
+      tags: [Model]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+      parameters:
+        - in: header
+          name: X-Model-Variant
+          required: false
+          schema:
+            type: string
+            enum:
+              - kNN-Voting
+              - GraphSAGE-I_v2
+              - GraphSAGE-E_kNN
+          description: Model variant to use
+      responses:
+        "200":
+          description: Classification result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClassificationResult"
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "503":
+          description: Model temporarily unavailable
+
+  /model/classifications:
+    get:
+      summary: Get user classification history
+      description: >
+        Returns paginated classification history.
+        Supports optional search by public code or subject.
+      tags: [Model]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+
+        - in: query
+          name: q
+          required: false
+          schema:
+            type: string
+          description: >
+            Optional search keyword.
+            Matches public code or subject.
+
+      responses:
+        "200":
+          description: Paginated classification history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ClassificationHistoryItem"
+                  page:
+                    type: integer
+                    example: 1
+                  limit:
+                    type: integer
+                    example: 3
+                  total:
+                    type: integer
+                    example: 12
+                  total_pages:
+                    type: integer
+                    example: 4
+                  q:
+                    type: string
+                    nullable: true
+                    example: ENG
+        "401":
+          description: Unauthorized
+
+
+  /health/app:
+    head:
+      summary: Application health check (HEAD only)
+      tags: [Default]
+      responses:
+        "200":
+          description: Service is healthy (HEAD returns headers only)
+          headers:
+            # Optional: you can define custom headers if needed
+            X-Health-Checked:
+              description: Indicates the health check was performed
+              schema:
+                type: string
+                example: ok
+
+  /health/database:
+    get:
+      summary: Database connectivity check
+      tags: [Default]
+      responses:
+        "200":
+          description: Database reachable
+        "500":
+          description: Database unreachable
+
+
+  # /teapot:
+  #   get:
+  #     summary: Easter egg
+  #     tags: [internal]
+  #     responses:
+  #       "418":
+  #         description: I'm a teapot ☕
+
+  # /model/classification/debug/knn-graphsage:
+  #   post:
+  #     summary: "[TEMP] Debug kNN GraphSAGE raw output"
+  #     description: >
+  #       ⚠️ TEMPORARY DEBUG ENDPOINT (NO AUTH)
+
+  #       Runs the inductive kNN GraphSAGE classifier and returns
+  #       the raw model output without any post-processing.
+
+  #       Purpose:
+  #         - Inspect label format
+  #         - Inspect score semantics
+  #         - Validate output shape before API finalization
+
+  #       This endpoint is NOT authenticated, NOT persisted,
+  #       and MUST NOT be used in production clients.
+
+  #     tags: [Model, Debug]
+
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             type: object
+  #             required:
+  #               - image
+  #             properties:
+  #               image:
+  #                 type: string
+  #                 format: binary
+  #                 description: Image file to classify
+
+  #     responses:
+  #       "200":
+  #         description: Raw GraphSAGE output
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 raw:
+  #                   type: object
+  #                   description: >
+  #                     Raw classifier output.
+  #                     Shape is NOT finalized and may change.
+  #                 processing_time_ms:
+  #                   type: number
+  #                   example: 123.45
+
+  #       "400":
+  #         description: Image file missing
+
+  #       "500":
+  #         description: ML inference failure
+
+tags:
+  - name: Default
+    description: Health and utility endpoints
+  - name: Users
+    description: User-related endpoints
+  - name: Authentication
+    description: Authorization-related endpoints
+  - name: Model
+    description: TBA
